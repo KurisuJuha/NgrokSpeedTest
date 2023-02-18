@@ -1,7 +1,7 @@
 using UnityEngine;
 using JuhaKurisu.PopoTools.ByteSerializer;
 using System.Linq;
-using WebSocketSharp;
+using SuperSimpleTcp;
 
 namespace JuhaKurisu.NgrokSpeedTest
 {
@@ -11,37 +11,45 @@ namespace JuhaKurisu.NgrokSpeedTest
         [SerializeField] private Transform playerTransform;
         [SerializeField] private float speed;
 
-        WebSocket webSocket;
+        SimpleTcpClient client;
 
 
         private void Start()
         {
-            webSocket = new WebSocket(url);
-            webSocket.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
+            client = new SimpleTcpClient(url);
 
-            webSocket.OnOpen += (sender, e) =>
-                Debug.Log("open");
-            webSocket.OnMessage += (sender, e) =>
-                Debug.Log("message");
-            webSocket.OnError += (sender, e) =>
-                Debug.Log("error");
-            webSocket.OnClose += (sender, e) =>
-                Debug.Log("close");
+            client.Events.Connected += (sender, e) =>
+            {
+                Debug.Log("connected");
+            };
 
-            webSocket.ConnectAsync();
-            if (Input.GetKeyDown(KeyCode.A)) SendData();
+            client.Events.DataReceived += (sender, e) =>
+            {
+                Debug.Log("DataReceived");
+            };
+
+            client.Events.Disconnected += (sender, e) =>
+            {
+                Debug.Log("Disconnected");
+            };
+
+            client.Connect();
+
+            client.Send("Hello!!!");
         }
 
         private void OnDestroy()
         {
-            webSocket.CloseAsync();
+            client?.Disconnect();
+            client?.Dispose();
         }
 
         private void SendData()
         {
             DataWriter writer = new DataWriter();
             writer.Append(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-            webSocket.Send(writer.bytes.ToArray());
+            client.Send(writer.bytes.ToArray());
+            //            webSocket.Send(writer.bytes.ToArray());
         }
     }
 }

@@ -335,6 +335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d36acb1849d39499bff502ff0ee7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: ws://192.168.11.30:2000
+  url: hoge
   playerTransform: {fileID: 1319671457}
   speed: 3
