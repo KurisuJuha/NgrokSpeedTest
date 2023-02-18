@@ -25,7 +25,9 @@ namespace JuhaKurisu.NgrokSpeedTest
 
             client.Events.DataReceived += (sender, e) =>
             {
-                Debug.Log("DataReceived");
+                Debug.Log(string.Join(",", e.Data));
+                DataReader reader = new DataReader(e.Data.ToArray());
+                playerTransform.position += (Vector3)reader.ReadVector2() * speed * Time.deltaTime;
             };
 
             client.Events.Disconnected += (sender, e) =>
@@ -35,7 +37,7 @@ namespace JuhaKurisu.NgrokSpeedTest
 
             client.Connect();
 
-            client.Send("Hello!!!");
+            client.Send();
         }
 
         private void OnDestroy()
@@ -49,7 +51,6 @@ namespace JuhaKurisu.NgrokSpeedTest
             DataWriter writer = new DataWriter();
             writer.Append(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
             client.Send(writer.bytes.ToArray());
-            //            webSocket.Send(writer.bytes.ToArray());
         }
     }
 }
