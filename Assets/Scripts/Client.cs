@@ -1,7 +1,7 @@
 using UnityEngine;
 using JuhaKurisu.PopoTools.ByteSerializer;
 using System.Linq;
-using WebSocketSharp;
+using NativeWebSocket;
 
 namespace JuhaKurisu.NgrokSpeedTest
 {
@@ -14,27 +14,29 @@ namespace JuhaKurisu.NgrokSpeedTest
         WebSocket webSocket;
 
 
-        private void Start()
+        private async void Start()
         {
             webSocket = new WebSocket(url);
-            webSocket.SslConfiguration.EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 
-            webSocket.OnOpen += (sender, e) =>
+            webSocket.OnOpen += () =>
                 Debug.Log("open");
-            webSocket.OnMessage += (sender, e) =>
+            webSocket.OnMessage += (e) =>
                 Debug.Log("message");
-            webSocket.OnError += (sender, e) =>
+            webSocket.OnError += (e) =>
                 Debug.Log("error");
-            webSocket.OnClose += (sender, e) =>
+            webSocket.OnClose += (bytes) =>
                 Debug.Log("close");
 
-            webSocket.ConnectAsync();
-            if (Input.GetKeyDown(KeyCode.A)) SendData();
+            // Keep sending messages at every 0.3s
+            InvokeRepeating("SendWebSocketMessage", 0.0f, 0.3f);
+
+            // waiting for messages
+            await webSocket.Connect();
         }
 
         private void OnDestroy()
         {
-            webSocket.CloseAsync();
+            webSocket.Close();
         }
 
         private void SendData()
