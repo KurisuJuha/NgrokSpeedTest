@@ -53,6 +53,7 @@ namespace JuhaKurisu.NgrokSpeedTest
         private void ReadData(byte[] bytes)
         {
             DataReader reader = new DataReader(bytes);
+            System.Guid guid = new(reader.ReadBytes(16));
             input = reader.ReadVector2();
         }
 
