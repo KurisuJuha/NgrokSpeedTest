@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.endel.nativewebsocket": "1.1.4",
     "com.unity.collab-proxy": "1.17.7",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.16",
@@ -8,6 +9,7 @@
     "com.unity.test-framework": "1.1.31",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.4",
+    "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.4",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.8",
     "jp.juhakurisu.popobyteserializer": "1.1.0",
@@ -41,8 +43,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.endel.nativewebsocket": "1.1.4"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {
